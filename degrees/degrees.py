@@ -130,6 +130,7 @@ def backtrack(node:Node):
         pathTaken.append(pairToAdd)
         node = node.parent
     pathTaken.reverse()
+    print(pathTaken)
     return pathTaken
     
 
