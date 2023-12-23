@@ -21,7 +21,6 @@ def initial_state():
 def player(board:list):
     """
     Returns player who has the next turn on a board.
-    REQUIRES: Valid board; no winner and not a terminal game
     """
     numX = 0 
     numO = 0
@@ -44,7 +43,21 @@ def actions(board):
     """
     Returns set of all possible actions (i, j) available on the board.
     """
-    raise NotImplementedError
+    set_of_all_possible_actions = set()
+
+    """
+    TODO: terminal() implementation
+    if terminal(board):
+        return None
+    """
+
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == EMPTY:
+                set_of_all_possible_actions.add(((i,j)))
+
+    return set_of_all_possible_actions
+
 
 
 def result(board, action):
@@ -56,8 +69,13 @@ def result(board, action):
 
 def winner(board):
     """
-    Returns the winner of the game, if there is one.
+    Returns the winner of the game, if there is one. Else returns None.
+    Assumes no two winners at the same time as that's an invalid board
     """
+
+    
+
+
     raise NotImplementedError
 
 
