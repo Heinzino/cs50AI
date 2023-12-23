@@ -72,7 +72,7 @@ def winner(board):
     Returns the winner of the game, if there is one. Else returns None.
     Assumes no two winners at the same time as that's an invalid board
     """
-    
+
     win_by_diag = ( (board[0][0] == board[1][1] and board[1][1] == board[2][2]) 
                       or (board[0][2] == board[1][1] and board[1][1] == board[2][0]) )
     if(win_by_diag):
@@ -93,7 +93,16 @@ def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    raise NotImplementedError
+
+    if winner(board) is not None:
+        return True
+
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == EMPTY:
+                return False
+    return True
+    
 
 
 def utility(board):

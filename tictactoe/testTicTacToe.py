@@ -95,6 +95,31 @@ class TestTicTacToe(unittest.TestCase):
         result = tictactoe.winner(initial_state())
         self.assertEqual(result,None)
 
+    def test_terminal(self):
+
+        result = tictactoe.terminal([[X,O,X],
+                                   [X,O,O],
+                                   [X,X,O]])
+        self.assertEqual(result,True)
+
+        result = tictactoe.terminal([[X,O,X],
+                                   [X,O,O],
+                                   [O,X,X]])
+        self.assertEqual(result,True)
+
+        result = tictactoe.terminal(initial_state())
+        self.assertEqual(result,False)
+
+        result = tictactoe.terminal([[X,O,X],
+                                    [O,X,O],
+                                    [O,X,O]])
+        self.assertEqual(result,True)
+
+        result = tictactoe.terminal([[X,O,X],
+                                    [O,EMPTY,O],
+                                    [O,X,O]])
+        self.assertEqual(result,False)
+
 
 
 if __name__ == "__main__":
