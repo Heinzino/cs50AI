@@ -18,11 +18,26 @@ def initial_state():
             [EMPTY, EMPTY, EMPTY]]
 
 
-def player(board):
+def player(board:list):
     """
     Returns player who has the next turn on a board.
+    REQUIRES: Valid board; no winner and not a terminal game
     """
-    raise NotImplementedError
+    numX = 0 
+    numO = 0
+    for row in board:
+        for cell in row:
+            if cell == X:
+                numX += 1
+            if cell == O:
+                numO += 1
+
+    if(numX == numO):
+        return X
+    elif(numX-1 == numO):
+        return O
+    else:
+        return EMPTY
 
 
 def actions(board):
