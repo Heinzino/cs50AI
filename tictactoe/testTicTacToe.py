@@ -118,7 +118,7 @@ class TestTicTacToe(unittest.TestCase):
 
 
     def test_result_return_new_board_with_applied_action(self):
-        
+
         with self.assertRaises(ValueError):
             tictactoe.result(initial_state(), EMPTY)
 
@@ -145,7 +145,22 @@ class TestTicTacToe(unittest.TestCase):
                                  [O,O,X],
                                  [EMPTY,EMPTY,X]])
 
+    def test_utility(self):
 
+        result = tictactoe.utility([[O,O,X],
+                                   [X,O,X],
+                                   [X,X,O]])
+        self.assertEqual(result,-1)
+
+        result = tictactoe.utility([[X,O,X],
+                                   [X,O,O],
+                                   [X,X,O]])
+        self.assertEqual(result,1)
+
+        result = tictactoe.utility([[X,O,X],
+                                   [X,O,O],
+                                   [O,X,X]])
+        self.assertEqual(result,0)
 
 if __name__ == "__main__":
     unittest.main()
