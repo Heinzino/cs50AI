@@ -22,6 +22,9 @@ def player(board:list):
     """
     Returns player who has the next turn on a board.
     """
+    if terminal(board):
+        return EMPTY
+    
     numX = 0 
     numO = 0
     for row in board:
@@ -45,11 +48,8 @@ def actions(board):
     """
     set_of_all_possible_actions = set()
 
-    """
-    TODO: terminal() implementation
     if terminal(board):
         return None
-    """
 
     for i in range(3):
         for j in range(3):
