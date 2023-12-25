@@ -130,8 +130,65 @@ def utility(board):
     else:
         return 0
 
-def minimax(board):
+def minimax(board) -> tuple:
     """
     Returns the optimal action for the current player on the board.
     """
-    raise NotImplementedError
+    currentPlayer = player(board)
+    tryingToMaximize = True    
+
+    if currentPlayer == O:
+        tryingToMaximize = False
+    elif currentPlayer == X:
+        tryingToMaximize = True
+    else:
+        return None
+    
+
+    def max_value(board) -> tuple:
+    
+        if terminal(board):
+            return utility(board),None
+        
+        highest_value = -math.inf
+        optimalAction = None
+
+        for action in actions(board):
+            val,act = min_value(result(board,action))
+            if(val > highest_value):
+                highest_value = val
+                optimalAction = action
+
+                if highest_value == 1: #if this action makes me win TAKE IT! optimization
+                    return highest_value,optimalAction
+                
+        return highest_value,optimalAction
+
+    def min_value(board) -> tuple:
+
+        if terminal(board):
+            return utility(board),None
+
+        lowest_value = math.inf
+        optimalAction = None
+
+        for action in actions(board):
+            val,act  = max_value(result(board,action))
+            if(val < lowest_value):
+                lowest_value = val
+                optimalAction = action
+
+                if lowest_value == -1:
+                    return lowest_value,optimalAction
+                
+        return lowest_value,optimalAction
+
+    
+    if tryingToMaximize:
+        val,optimalAction = max_value(board)
+    else:
+        val,optimalAction = min_value(board)
+
+    return optimalAction
+
+    

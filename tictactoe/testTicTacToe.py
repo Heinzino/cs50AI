@@ -161,6 +161,25 @@ class TestTicTacToe(unittest.TestCase):
                                    [X,O,O],
                                    [O,X,X]])
         self.assertEqual(result,0)
+    
+    def test_minimax(self):
 
+
+        result = tictactoe.minimax([[X,O,EMPTY],
+                                   [EMPTY,EMPTY,EMPTY],
+                                   [EMPTY,EMPTY,EMPTY]])
+        self.assertEqual(result,(1,1))
+        
+        result = tictactoe.minimax([[EMPTY,X,O],
+                                    [O,X,X],
+                                    [X,EMPTY,O]])
+        self.assertEqual(result,(2,1))
+
+        result = tictactoe.minimax([[O,X,O],
+                                    [O,X,X],
+                                    [X,O,X]])
+        self.assertEqual(result,None)
+        
+        
 if __name__ == "__main__":
     unittest.main()
