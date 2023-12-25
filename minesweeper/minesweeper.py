@@ -101,27 +101,24 @@ class Sentence():
     def __str__(self):
         return f"{self.cells} = {self.count}"
 
-    def known_mines(self):
+    def known_mines(self) -> set:
         """
         Returns the set of all cells in self.cells known to be mines.
         """
-        set_of_all_cells_that_are_mines = set()
         num_cells = len(self.cells)
         if(num_cells == self.count and num_cells > 0):
-            for cell in self.cells:
-                set_of_all_cells_that_are_mines.add(cell)
-        return set_of_all_cells_that_are_mines
+            return self.cells
+        else:
+            return set()
 
-    def known_safes(self):
+    def known_safes(self) -> set:
         """
         Returns the set of all cells in self.cells known to be safe.
         """
-        set_of_all_cells_that_are_safe = set()
         if(self.count == 0 and len(self.cells) > 0):
-            for cell in self.cells:
-                set_of_all_cells_that_are_safe.add(cell)
-
-        return set_of_all_cells_that_are_safe
+            return self.cells
+        else:
+            return set()
 
     def mark_mine(self, cell):
         """
@@ -161,7 +158,7 @@ class MinesweeperAI():
         self.safes = set()
 
         # List of sentences about the game known to be true
-        self.knowledge = []
+        self.knowledge:list[Sentence] = []
 
     def mark_mine(self, cell):
         """
@@ -192,16 +189,22 @@ class MinesweeperAI():
                 # Ignore the cell itself
                 if (i, j) == cell:
                     continue
-                
-                inBounds:bool = 0 <=i< self.height and 0 <= j < self.width
-                if inBounds:
-                    potentialCell = (i,j)
-                    is_unknown_cell:bool = potentialCell not in self.mines and potentialCell not in self.safes
-                    if is_unknown_cell:
-                        valid_neighbours.add(potentialCell)
+                elif (i,j) in self.mines:
+                    count-=1
+                    continue
+                elif (i,j) in self.safes:
+                    continue
+                else:
+                    inBounds:bool = 0 <=i< self.height and 0 <= j < self.width
+                    if inBounds:
+                        valid_neighbours.add((i,j))
         
         newSentence = Sentence(cells=valid_neighbours,count=count)
         return newSentence
+
+    def removeEmptyKnowledge(self):
+        emptyKnowledge = Sentence(cells=set(),count=0)
+        self.knowledge[:] = [sentence for sentence in self.knowledge if sentence != emptyKnowledge]
 
     def add_knowledge(self, cell, count):
         """
@@ -225,14 +228,40 @@ class MinesweeperAI():
         #3
         newSentence:Sentence = self.make_new_sentence_with_cell(cell,count)
         self.knowledge.append(newSentence)
-        #4
-        for sentence in self.knowledge:
-            dosomething = False
-        
-        #5
-        for sentence in self.knowledge:
-            dosomething = True
-        raise NotImplementedError
+
+        new_inference_can_be_made = True
+        while(new_inference_can_be_made):
+            new_inference_can_be_made = False
+                
+            mines_to_mark = set() #remove after loop to not cause errors while looping through set
+            safes_to_mark = set()            
+
+            #4
+            for sentence in self.knowledge:
+                mines_to_mark = mines_to_mark.union((sentence.known_mines()))
+                safes_to_mark = safes_to_mark.union((sentence.known_safes()))
+
+            if mines_to_mark: #If empty skip
+                for mine_to_mark in mines_to_mark:
+                    self.mark_mine(mine_to_mark)
+                    new_inference_can_be_made = True
+            
+            if safes_to_mark:
+                for safes in safes_to_mark:
+                    self.mark_safe(safes)
+                    new_inference_can_be_made = True
+            
+            self.removeEmptyKnowledge() #Before subset inference is made so that empty set is a subset doesnt' cause infinite loop
+
+            #5
+            for sentence in self.knowledge:
+                for anotherSentence in self.knowledge:
+                    if sentence != anotherSentence and sentence.cells.issubset(anotherSentence.cells):
+                        sentenceToInfer = Sentence(cells=anotherSentence.cells.difference(sentence.cells),
+                                                   count=anotherSentence.count - sentence.count)
+                        if sentenceToInfer not in self.knowledge:
+                            self.knowledge.append(sentenceToInfer)
+                            new_inference_can_be_made=True
 
     def make_safe_move(self):
         """
