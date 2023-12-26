@@ -183,12 +183,13 @@ class CrosswordCreator():
         def no_conflicts_between_neighbouring_variables() -> bool:
             for variable in assignment.keys():
                 for neighbour in self.crossword.neighbors(variable):
-                    overlappingCell:tuple = self.crossword.overlaps[variable,neighbour]
+                    if neighbour in set(assignment.keys()):
+                        overlappingCell:tuple = self.crossword.overlaps[variable,neighbour]
 
-                    if overlappingCell:
-                        overlapping_letter_is_different = assignment[variable][overlappingCell[0]] != assignment[neighbour][overlappingCell[1]]
-                        if overlapping_letter_is_different:
-                            return False
+                        if overlappingCell:
+                            overlapping_letter_is_different = (assignment[variable][overlappingCell[0]] != assignment[neighbour][overlappingCell[1]] )
+                            if overlapping_letter_is_different:
+                                return False
             return True
 
         all_values_are_distinct = len(set(assignment.values())) == len(assignment.values())
@@ -216,12 +217,12 @@ class CrosswordCreator():
             for neighbour in self.crossword.neighbors(var):
                 if word in self.domains[neighbour]:
                     num_eliminations += 1
-                    
+
             word_to_num_eliminations[word] = num_eliminations
 
         return sorted(word_to_num_eliminations.keys(), key= lambda x:word_to_num_eliminations[x]) 
 
-    def select_unassigned_variable(self, assignment):
+    def select_unassigned_variable(self, assignment:dict) -> Variable:
         """
         Return an unassigned variable not already part of `assignment`.
         Choose the variable with the minimum number of remaining values
@@ -229,9 +230,13 @@ class CrosswordCreator():
         degree. If there is a tie, any of the tied variables are acceptable
         return values.
         """
-        raise NotImplementedError
+        variables_not_assigned = self.crossword.variables.difference(set(assignment.keys()))
 
-    def backtrack(self, assignment):
+        for var in variables_not_assigned:
+            return var
+        
+
+    def backtrack(self, assignment:dict):
         """
         Using Backtracking Search, take as input a partial assignment for the
         crossword and return a complete assignment if possible to do so.
@@ -240,7 +245,20 @@ class CrosswordCreator():
 
         If no assignment is possible, return None.
         """
-        raise NotImplementedError
+        if self.assignment_complete(assignment):
+            return assignment
+        
+        var = self.select_unassigned_variable(assignment)
+        for value in self.order_domain_values(var,assignment):
+            assignment[var] = value
+            if self.consistent(assignment):
+                result = self.backtrack(assignment)
+                if result is not None:
+                    return result
+
+            assignment.pop(var)
+
+        return None
 
 
 def main():
