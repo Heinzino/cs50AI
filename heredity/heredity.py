@@ -230,24 +230,34 @@ def update(probabilities:dict, one_gene:set, two_genes:set, have_trait:set, p:fl
     the person is in `have_gene` and `have_trait`, respectively.
     """
 
-    joint_prob_query_dict = make_joint_probability_query_dict(probabilities.keys(),one_gene,two_genes,have_trait)
+    joint_prob_query_dict = make_joint_probability_query_dict(probabilities,one_gene,two_genes,have_trait)
 
-    for person in probabilities:
+    for person,data in probabilities.items():
         person_num_genes = joint_prob_query_dict[person][0]
         person_has_trait = joint_prob_query_dict[person][1]
 
-        probabilities[person]["gene"][person_num_genes] += p
-        probabilities[person]["trait"][person_has_trait] += p
+        data["gene"][person_num_genes] += p
+        data["trait"][person_has_trait] += p
 
 
-def normalize(probabilities):
+def normalize(probabilities:dict) -> None:
     """
     Update `probabilities` such that each probability distribution
     is normalized (i.e., sums to 1, with relative proportions the same).
     """
 
-    #Ratio idea 0.3 : 0.1 would be 0.3 / (0.3+0.1) = 0.75:0.25, extend wiht multiplie porportion
-    raise NotImplementedError
+    #Ratio idea 0.3 : 0.1 would be 0.3 / (0.3+0.1) = 0.75:0.25, extend with multiplie porportion
+    #Update Gene Probability Distribution
+    for person,data in probabilities.items():
+
+        total_proportions_genes = sum(data["gene"].values())
+        for gene in data["gene"].keys():
+            data["gene"][gene] = data["gene"][gene] / total_proportions_genes
+
+        total_proportions_trait = sum(data["trait"].values())
+        for trait in data["trait"].keys():
+            data["trait"][trait] = data["trait"][trait] / total_proportions_trait
+
 
 
 if __name__ == "__main__":
