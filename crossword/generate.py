@@ -184,9 +184,11 @@ class CrosswordCreator():
             for variable in assignment.keys():
                 for neighbour in self.crossword.neighbors(variable):
                     overlappingCell:tuple = self.crossword.overlaps[variable,neighbour]
-                    overlapping_letter_is_different = assignment[variable][overlappingCell[0]] != assignment[neighbour][overlappingCell[1]]
-                    if overlapping_letter_is_different:
-                        return False
+
+                    if overlappingCell:
+                        overlapping_letter_is_different = assignment[variable][overlappingCell[0]] != assignment[neighbour][overlappingCell[1]]
+                        if overlapping_letter_is_different:
+                            return False
             return True
 
         all_values_are_distinct = len(set(assignment.values())) == len(assignment.values())
