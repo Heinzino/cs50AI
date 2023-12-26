@@ -2,6 +2,8 @@ import os
 import random
 import re
 import sys
+import numpy as np
+import pandas as pd
 
 DAMPING = 0.85
 SAMPLES = 10000
@@ -80,7 +82,7 @@ def transition_model(corpus:dict, page:str, damping_factor:float) -> dict:
 
 
 
-def sample_pagerank(corpus, damping_factor, n):
+def sample_pagerank(corpus:dict, damping_factor:float, n:int) -> dict:
     """
     Return PageRank values for each page by sampling `n` pages
     according to transition model, starting with a page at random.
@@ -89,8 +91,25 @@ def sample_pagerank(corpus, damping_factor, n):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    raise NotImplementedError
+    num_samples_left = n
+    page_rank_values = {page : 0 for page in corpus}
 
+    previous_sample = random.choice(list(corpus.keys()))
+    page_rank_values[previous_sample] += 1
+    num_samples_left -= 1
+
+    while(num_samples_left > 0):
+        pages, probs = zip(*transition_model(corpus,previous_sample,damping_factor).items())
+        next_page = np.random.choice(pages, p=probs)
+        page_rank_values[next_page] += 1
+        num_samples_left -= 1
+        previous_sample = next_page
+    
+    #Normalize dictionary
+    for key in page_rank_values:
+        page_rank_values[key] /= n
+    
+    return page_rank_values
 
 def iterate_pagerank(corpus, damping_factor):
     """
@@ -101,6 +120,9 @@ def iterate_pagerank(corpus, damping_factor):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
+    num_total_pages = len(corpus)
+    pageRankValues = {page : 1/num_total_pages for page in corpus}
+
     raise NotImplementedError
 
 
