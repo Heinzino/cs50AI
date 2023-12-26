@@ -109,7 +109,7 @@ class CrosswordCreator():
             self.domains[variable].difference_update(wordsToRemove)
 
 
-    def revise(self, x, y):
+    def revise(self, x:Variable, y:Variable):
         """
         Make variable `x` arc consistent with variable `y`.
         To do so, remove values from `self.domains[x]` for which there is no
@@ -118,7 +118,25 @@ class CrosswordCreator():
         Return True if a revision was made to the domain of `x`; return
         False if no revision was made.
         """
-        raise NotImplementedError
+        
+        revision = False
+
+        xValsToRemove = set()
+        for xVal in self.domains[x]:
+
+            if self.no_y_in_Ydomain_satisfies_constraint(xVal,y):
+                xValsToRemove.add(xVal)
+                revision = True
+
+        self.domains[x].difference_update(xValsToRemove)
+        return revision
+
+    def no_y_in_Ydomain_satisfies_constraint(self,x:str,y:Variable) -> bool:
+        updated_y_domain = self.domains[y].difference(set(x))
+        if len(updated_y_domain == 0):
+            return True
+        else:
+            return False
 
     def ac3(self, arcs=None):
         """
