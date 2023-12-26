@@ -1,4 +1,5 @@
 import sys
+from queue import Queue
 
 from crossword import *
 
@@ -138,7 +139,7 @@ class CrosswordCreator():
         else:
             return False
 
-    def ac3(self, arcs=None):
+    def ac3(self, arcs:list=None):
         """
         Update `self.domains` such that each variable is arc consistent.
         If `arcs` is None, begin with initial list of all arcs in the problem.
@@ -147,7 +148,25 @@ class CrosswordCreator():
         Return True if arc consistency is enforced and no domains are empty;
         return False if one or more domains end up empty.
         """
-        raise NotImplementedError
+        def create_Queue_with_all_arcs() -> Queue:
+            return Queue([(v1,v2) for v1,v2 in self.crossword.overlaps.keys() if self.crossword.overlaps[v1,v2] is not None])
+
+        if arcs == None:
+            initial_queue = create_Queue_with_all_arcs() 
+        else:
+            initial_queue = Queue(arcs)
+
+        while not initial_queue.empty():
+            (x,y) = initial_queue.get()
+            if self.revise(x,y):
+                if len(self.domains[x] == 0): #No possible values for X to solve csp
+                    return False
+
+                neighbours = self.crossword.neighbors(x).difference(y)
+                for neighbour in neighbours:
+                    initial_queue.put(tuple((neighbour,x)))
+        
+        return True
 
     def assignment_complete(self, assignment):
         """
