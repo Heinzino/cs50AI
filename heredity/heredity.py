@@ -222,14 +222,22 @@ def calculate_joint_prob_has_gene_with_parents(person:str,people:dict,joint_prob
     
 
 
-def update(probabilities, one_gene, two_genes, have_trait, p):
+def update(probabilities:dict, one_gene:set, two_genes:set, have_trait:set, p:float) -> None:
     """
     Add to `probabilities` a new joint probability `p`.
     Each person should have their "gene" and "trait" distributions updated.
     Which value for each distribution is updated depends on whether
     the person is in `have_gene` and `have_trait`, respectively.
     """
-    raise NotImplementedError
+
+    joint_prob_query_dict = make_joint_probability_query_dict(probabilities.keys(),one_gene,two_genes,have_trait)
+
+    for person in probabilities:
+        person_num_genes = joint_prob_query_dict[person][0]
+        person_has_trait = joint_prob_query_dict[person][1]
+
+        probabilities[person]["gene"][person_num_genes] += p
+        probabilities[person]["trait"][person_has_trait] += p
 
 
 def normalize(probabilities):
