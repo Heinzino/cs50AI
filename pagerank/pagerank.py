@@ -69,8 +69,8 @@ def transition_model(corpus:dict, page:str, damping_factor:float) -> dict:
         return probability_distribution
 
     probability_distribution = dict()
-    probability_for_linked_pages = round(damping_factor/num_linked_pages, 7)
-    probability_for_all_pages = round((1-damping_factor)/num_total_pages,7)
+    probability_for_linked_pages = round(damping_factor/num_linked_pages, 15)
+    probability_for_all_pages = round((1-damping_factor)/num_total_pages,15)
 
     for page in corpus.keys():
         if page in linked_pages:
