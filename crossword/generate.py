@@ -202,14 +202,24 @@ class CrosswordCreator():
         
         return no_conflicts_between_neighbouring_variables()
 
-    def order_domain_values(self, var, assignment):
+    def order_domain_values(self, var:Variable, assignment:dict) -> list:
         """
         Return a list of values in the domain of `var`, in order by
         the number of values they rule out for neighboring variables.
         The first value in the list, for example, should be the one
         that rules out the fewest values among the neighbors of `var`.
         """
-        raise NotImplementedError
+        word_to_num_eliminations = dict()
+         
+        for word in self.domains[var]:
+            num_eliminations = 0
+            for neighbour in self.crossword.neighbors(var):
+                if word in self.domains[neighbour]:
+                    num_eliminations += 1
+                    
+            word_to_num_eliminations[word] = num_eliminations
+
+        return sorted(word_to_num_eliminations.keys(), key= lambda x:word_to_num_eliminations[x]) 
 
     def select_unassigned_variable(self, assignment):
         """
