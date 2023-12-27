@@ -124,7 +124,6 @@ def evaluate(labels:list, predictions:list) -> tuple:
     representing the "true negative rate": the proportion of
     actual negative labels that were accurately identified.
     """
-    print(predictions)
     #Label is either 1 or 0 so sum adds up to num_total_positives
     total_true_positives = sum(labels) 
     total_true_negatives = len(labels) - total_true_positives
@@ -132,9 +131,8 @@ def evaluate(labels:list, predictions:list) -> tuple:
     num_positives_correctly_identified = 0
     num_negatives_correctly_identified = 0
     for trueLabel, predictedLabel in zip(labels,predictions):
-        
         if trueLabel == predictedLabel and predictedLabel == 1:
-            num_negatives_correctly_identified += 1
+            num_positives_correctly_identified += 1
         elif trueLabel == predictedLabel and predictedLabel == 0:
             num_negatives_correctly_identified += 1
 
