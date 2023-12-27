@@ -3,8 +3,7 @@ import random
 import time
 
 
-class Nim():
-
+class Nim:
     def __init__(self, initial=[1, 3, 5, 7]):
         """
         Initialize game board.
@@ -70,8 +69,7 @@ class Nim():
             self.winner = self.player
 
 
-class NimAI():
-
+class NimAI:
     def __init__(self, alpha=0.5, epsilon=0.1):
         """
         Initialize AI with an empty Q-learning dictionary,
@@ -82,9 +80,9 @@ class NimAI():
          - `state` is a tuple of remaining piles, e.g. (1, 1, 4, 4)
          - `action` is a tuple `(i, j)` for an action
         """
-        self.q:dict = dict()
-        self.alpha:float = alpha
-        self.epsilon:float = epsilon
+        self.q: dict = dict()
+        self.alpha: float = alpha
+        self.epsilon: float = epsilon
 
     def update(self, old_state, action, new_state, reward):
         """
@@ -96,14 +94,21 @@ class NimAI():
         best_future = self.best_future_reward(new_state)
         self.update_q_value(old_state, action, old, reward, best_future)
 
-    def get_q_value(self, state:list, action:tuple):
+    def get_q_value(self, state: list, action: tuple):
         """
         Return the Q-value for the state `state` and the action `action`.
         If no Q-value exists yet in `self.q`, return 0.
         """
-        return self.q.get((tuple(state),action),0)
+        return self.q.get((tuple(state), action), 0)
 
-    def update_q_value(self, state, action, old_q, reward, future_rewards):
+    def update_q_value(
+        self,
+        state: list,
+        action: tuple,
+        old_q: float,
+        reward: float,
+        future_rewards: float,
+    ) -> None:
         """
         Update the Q-value for the state `state` and the action `action`
         given the previous Q-value `old_q`, a current reward `reward`,
@@ -118,9 +123,13 @@ class NimAI():
         `alpha` is the learning rate, and `new value estimate`
         is the sum of the current reward and estimated future rewards.
         """
-        raise NotImplementedError
+        new_value_estimate = reward + future_rewards
+        old_value_estimate = self.q[(tuple(state), action)]
+        self.q[(tuple(state), action)] = old_q + self.alpha * (
+            new_value_estimate - old_value_estimate
+        )
 
-    def best_future_reward(self, state):
+    def best_future_reward(self, state: list):
         """
         Given a state `state`, consider all possible `(state, action)`
         pairs available in that state and return the maximum of all
@@ -130,7 +139,17 @@ class NimAI():
         Q-value in `self.q`. If there are no available actions in
         `state`, return 0.
         """
-        raise NotImplementedError
+        best_future_reward_val = -math.inf
+        for possibleActions in Nim.available_actions(state):
+            best_future_reward_val = max(
+                best_future_reward_val, self.get_q_value(state, possibleActions)
+            )
+
+        # no avaliable actions in state
+        if best_future_reward_val == -math.inf:
+            return 0
+        else:
+            return best_future_reward_val
 
     def choose_action(self, state, epsilon=True):
         """
@@ -163,14 +182,10 @@ def train(n):
         game = Nim()
 
         # Keep track of last move made by either player
-        last = {
-            0: {"state": None, "action": None},
-            1: {"state": None, "action": None}
-        }
+        last = {0: {"state": None, "action": None}, 1: {"state": None, "action": None}}
 
         # Game loop
         while True:
-
             # Keep track of current state and action
             state = game.piles.copy()
             action = player.choose_action(game.piles)
@@ -190,7 +205,7 @@ def train(n):
                     last[game.player]["state"],
                     last[game.player]["action"],
                     new_state,
-                    1
+                    1,
                 )
                 break
 
@@ -200,7 +215,7 @@ def train(n):
                     last[game.player]["state"],
                     last[game.player]["action"],
                     new_state,
-                    0
+                    0,
                 )
 
     print("Done training")
@@ -225,7 +240,6 @@ def play(ai, human_player=None):
 
     # Game loop
     while True:
-
         # Print contents of piles
         print()
         print("Piles:")
