@@ -2,6 +2,7 @@ import math
 import random
 import time
 
+import numpy as np
 
 class Nim:
     def __init__(self, initial=[1, 3, 5, 7]):
@@ -124,9 +125,8 @@ class NimAI:
         is the sum of the current reward and estimated future rewards.
         """
         new_value_estimate = reward + future_rewards
-        old_value_estimate = self.q[(tuple(state), action)]
         self.q[(tuple(state), action)] = old_q + self.alpha * (
-            new_value_estimate - old_value_estimate
+            new_value_estimate - old_q
         )
 
     def best_future_reward(self, state: list):
@@ -151,7 +151,7 @@ class NimAI:
         else:
             return best_future_reward_val
 
-    def choose_action(self, state, epsilon=True):
+    def choose_action(self, state:list, epsilon=True) -> tuple:
         """
         Given a state `state`, return an action `(i, j)` to take.
 
@@ -166,7 +166,25 @@ class NimAI:
         If multiple actions have the same Q-value, any of those
         options is an acceptable return value.
         """
-        raise NotImplementedError
+
+        max_action_Qval_pair = ( (0,0) , -math.inf)
+        set_avaliable_actions = Nim.available_actions(state)
+
+        for possibleAction in set_avaliable_actions:
+            q_val = self.get_q_value(state,possibleAction)
+            if q_val > max_action_Qval_pair[1]:
+                max_action_Qval_pair = (possibleAction, q_val)
+
+        if epsilon == True:
+            randomAction_to_take = random.choice(tuple(set_avaliable_actions))
+            choices = [max_action_Qval_pair[0], randomAction_to_take]
+            takeRandomChoice = np.random.choice(
+                a=[0,1],
+                p=[(1-self.epsilon),self.epsilon]
+            )
+            return choices[takeRandomChoice]
+        else:
+            return max_action_Qval_pair[0]
 
 
 def train(n):
