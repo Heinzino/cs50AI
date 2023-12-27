@@ -1,5 +1,7 @@
 import sys
 from queue import Queue
+from copy import deepcopy
+import time
 
 from crossword import *
 
@@ -276,9 +278,37 @@ class CrosswordCreator():
 
         return None
 
+    def backtrack_withInference(self,assignment:dict):
+        """
+        Using Backtracking Search, take as input a partial assignment for the
+        crossword and return a complete assignment if possible to do so.
+
+        `assignment` is a mapping from variables (keys) to words (values).
+        Optimized with inference from acp3
+
+        If no assignment is possible, return None.
+        """
+        if self.assignment_complete(assignment):
+            return assignment
+        
+        var = self.select_unassigned_variable(assignment)
+        domains_before_assignment = deepcopy(self.domains)
+        for value in self.order_domain_values(var,assignment):
+            assignment[var] = value
+            if self.consistent(assignment):
+                self.domains[var] = value
+                self.ac3([(neighbour,var) for neighbour in self.crossword.neighbors(var)])
+                result = self.backtrack_withInference(assignment)
+                if result is not None:
+                    return result
+
+            assignment.pop(var)
+            self.domains = domains_before_assignment
+
+        return None
 
 def main():
-
+    #start_time = time.time()
     # Check usage
     if len(sys.argv) not in [3, 4]:
         sys.exit("Usage: python generate.py structure words [output]")
@@ -297,6 +327,7 @@ def main():
     if assignment is None:
         print("No solution.")
     else:
+        #print(time.time() - start_time)
         creator.print(assignment)
         if output:
             creator.save(assignment, output)
