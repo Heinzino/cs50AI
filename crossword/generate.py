@@ -232,9 +232,25 @@ class CrosswordCreator():
         """
         variables_not_assigned = self.crossword.variables.difference(set(assignment.keys()))
 
+        var_to_remaining_values_in_domain = dict()
         for var in variables_not_assigned:
-            return var
-        
+            var_to_remaining_values_in_domain[var] = len(self.domains[var])
+
+        fewest_remaining_value = min(list(var_to_remaining_values_in_domain.values()))
+        vars_with_fewest_remaining_values = [var for var,value in var_to_remaining_values_in_domain.items() if value == fewest_remaining_value]
+
+        if len(vars_with_fewest_remaining_values) == 1:
+            return vars_with_fewest_remaining_values[0]
+        else:
+            var_to_degree = dict()
+            for var in vars_with_fewest_remaining_values:
+                var_to_degree[var] = len(self.crossword.neighbors(var))
+            
+            largest_degree = max(list(var_to_degree.values()))
+            vars_with_fewest_degree = [var for var,value in var_to_degree.items() if value == largest_degree]
+            return vars_with_fewest_degree[-1]
+
+
 
     def backtrack(self, assignment:dict):
         """
