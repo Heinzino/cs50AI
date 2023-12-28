@@ -1,0 +1,22 @@
+Varialbes TO Manipulate
+
+    #Convolution
+    -Size of Kernel
+    -numFilters
+
+    #Pooling
+    -Type: Avg, Max, GlobalMax
+    -PoolSize
+
+    #Num of Hidden Layers
+
+    #DropoutRate
+
+
+Default Values: 
+SizeOfKernal = (3,3) ; numFilters = 20, poolsize=(2,2)
+
+Experiments:
+
+1. Default Values ~ 85% Accuracy
+
