@@ -20,3 +20,12 @@ Experiments:
 
 1. Default Values ~ 85% Accuracy
 
+2. Size of Kernal
+    (4,4) -> Cycles between high accuracy of 95 to 86 not consistent
+    (2,2) ~ 50% Accuracy
+    Sticking with default Values
+
+3. numFilters
+    32 ~ 90% accuracy
+    64
+

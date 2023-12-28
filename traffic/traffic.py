@@ -80,7 +80,7 @@ def get_model():
     The output layer should have `NUM_CATEGORIES` units, one for each category.
     """
     
-    numFilters = 20
+    numFilters = 64
     sizeOfKernel = (3,3)
     model = keras.Sequential([
         
