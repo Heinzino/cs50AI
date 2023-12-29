@@ -80,10 +80,18 @@ def get_model():
     The output layer should have `NUM_CATEGORIES` units, one for each category.
     """
     
-    numFilters = 32
+    numFilters = 16
     sizeOfKernel = (3,3) 
     model = keras.Sequential([
         
+        keras.layers.Conv2D(
+            filters=numFilters,
+            kernel_size=sizeOfKernel,
+            activation="relu",
+            input_shape=(IMG_WIDTH,IMG_HEIGHT,3)
+        ),
+
+        keras.layers.MaxPool2D(pool_size=(2,2)),
         keras.layers.Conv2D(
             filters=numFilters,
             kernel_size=sizeOfKernel,
