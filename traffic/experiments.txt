@@ -5,7 +5,6 @@ Varialbes TO Manipulate
     -numFilters
 
     #Pooling
-    -Type: Avg, Max, GlobalMax
     -PoolSize
 
     #Num of Hidden Layers
@@ -27,5 +26,25 @@ Experiments:
 
 3. numFilters
     32 ~ 90% accuracy
-    64
+    64 ~ 90% accuracy
+    128 ~ 95% accuracy
+    Going with 32
 
+4. Pooling Size
+    (3,3) ~ 78% accuracy
+    (4,4) ~ 83% accuracy
+    Sticking with default values
+
+5. Extra Convultion + Pooling Layer (32 numFilters rest default)
+    Attempt 1 ~ 65% accuracy
+    Attempt 2 ~ 59% accuracy
+    Attempt 3 ~ 73% accuracy
+    Stick with just one convultion + pooling layer
+
+6. DropoutRate
+    0.4 ~ 90% accuracy
+    0.3 ~ Averages about 87%, has high swings
+    0.2 ~ 75% accuracy
+    0.6 ~ 88% accuracy
+
+    Sticking with 0.4

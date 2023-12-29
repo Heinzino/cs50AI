@@ -80,8 +80,8 @@ def get_model():
     The output layer should have `NUM_CATEGORIES` units, one for each category.
     """
     
-    numFilters = 64
-    sizeOfKernel = (3,3)
+    numFilters = 32
+    sizeOfKernel = (3,3) 
     model = keras.Sequential([
         
         keras.layers.Conv2D(
@@ -96,7 +96,7 @@ def get_model():
 
         #Add a hidden Layer
         keras.layers.Dense(128,activation="relu"),
-        keras.layers.Dropout(0.5),
+        keras.layers.Dropout(0.4),
 
         #Output Layer
         keras.layers.Dense(NUM_CATEGORIES, activation="softmax")
