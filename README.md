@@ -13,7 +13,7 @@ Using minimax to have an AI play tic-tac-toe optimally. Built using test-driven 
 ![TicTacToeImage](./readMeImgs/tictactoeAI.png)
 
 
-Week 1: Knowledge Problems
+#Week 1: Knowledge Problems
 Propositional Logic. Entailment. Inference. Model Checking. Resolution. First Order Logic.
 
 [Knights](https://github.com/Heinzino/cs50AI/tree/main/knights)
@@ -24,7 +24,7 @@ AI that plays Minesweeper using logical inferences to make moves.
 
 ![MinesweeperImage](./readMeImgs/minesweeperAI.png)
 
-Week 2: Uncertainity Problems
+#Week 2: Uncertainity Problems
 Probability. Conditional Probability. Random Variables. Independence. Bayes’ Rule. Joint Probability. Bayesian Networks. Sampling. Markov Models. Hidden Markov Models.
 
 [PageRank](https://github.com/Heinzino/cs50AI/tree/main/pagerank)
@@ -35,7 +35,7 @@ AI uses PageRank Algorithim to rank web pages by importance.
 Uses a Bayseian Network to assess the likelihood that a person will have a particular genetic trait.
 ![heredityPic](./readMeImgs/heredityPic.png)
 
-Week 3: Optimization Problems
+#Week 3: Optimization Problems
 Local Search. Hill Climbing. Simulated Annealing. Linear Programming. Constraint Satisfaction. Backtracking Search.
 
 [Crossword](https://github.com/Heinzino/cs50AI/tree/main/crossword)
@@ -43,7 +43,7 @@ Write an AI to generate crossword puzzles.
 
 ![crosswordImg](./crossword/output.png)
 
-Week 4: Learning Problems
+#Week 4: Learning Problems
 Supervised Learning. Nearest-Neighbor Classification. Perceptron Learning. Support Vector Machines. Regression. Loss Functions. Overfitting. Regularization. Reinforcement Learning. Markov Decision Processes. Q-Learning. Unsupervised Learning. k-means Clustering.
 
 [Shopping](https://github.com/Heinzino/cs50AI/tree/main/shopping)
@@ -56,7 +56,7 @@ Write an AI that teaches itself to play Nim through reinforcement learning.
 
 ![NimAi](./readMeImgs/nimAI.png)
 
-Week 5: Neural Networks
+#Week 5: Neural Networks
 Artificial Neural Networks. Activation Functions. Gradient Descent. Backpropagation. Overfitting. TensorFlow. Image Convolution. Convolutional Neural Networks. Recurrent Neural Networks.
 
 [Traffic](https://github.com/Heinzino/cs50AI/tree/main/traffic)
