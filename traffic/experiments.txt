@@ -36,10 +36,8 @@ Experiments:
     Sticking with default values
 
 5. Extra Convultion + Pooling Layer (32 numFilters rest default)
-    Attempt 1 ~ 65% accuracy
-    Attempt 2 ~ 59% accuracy
-    Attempt 3 ~ 73% accuracy
-    Stick with just one convultion + pooling layer; Lot more computation
+    Consistent 88% accuracy average
+    Going with two convultion + pooling layer; More computation
 
 6. DropoutRate
     0.4 ~ 90% accuracy
