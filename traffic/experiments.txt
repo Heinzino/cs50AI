@@ -39,7 +39,7 @@ Experiments:
     Attempt 1 ~ 65% accuracy
     Attempt 2 ~ 59% accuracy
     Attempt 3 ~ 73% accuracy
-    Stick with just one convultion + pooling layer
+    Stick with just one convultion + pooling layer; Lot more computation
 
 6. DropoutRate
     0.4 ~ 90% accuracy
